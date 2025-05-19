@@ -66,7 +66,6 @@ const labelText = computed(() => {
   })
 })
 
-const isDisabled = computed(() => rootContext.isDateDisabled(props.day) || rootContext.disableDaysOutsideCurrentView.value)
 const isUnavailable = computed(() =>
   rootContext.isDateUnavailable?.(props.day) ?? false,
 )
@@ -76,9 +75,12 @@ const isDateToday = computed(() => {
 const isOutsideView = computed(() => {
   return !isSameMonth(props.day, props.month)
 })
+
 const isOutsideVisibleView = computed(() =>
   rootContext.isOutsideVisibleView(props.day),
 )
+
+const isDisabled = computed(() => rootContext.isDateDisabled(props.day) || (rootContext.disableDaysOutsideCurrentView.value && isOutsideView.value))
 
 const isFocusedDate = computed(() => {
   return !rootContext.disabled.value && isSameDay(props.day, rootContext.placeholder.value)
