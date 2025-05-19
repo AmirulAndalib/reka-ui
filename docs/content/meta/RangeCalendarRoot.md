@@ -59,6 +59,10 @@
     'type': 'boolean',
     'required': false,
     'default': 'false'
+    'name': 'fixedDate',
+    'description': '<p>Which part of the range should be fixed</p>\n',
+    'type': '\'start\' | \'end\'',
+    'required': false
   },
   {
     'name': 'fixedWeeks',
@@ -165,7 +169,7 @@
   {
     'name': 'weekdayFormat',
     'description': '<p>The format to use for the weekday strings provided via the weekdays slot prop</p>\n',
-    'type': '\'long\' | \'short\' | \'narrow\'',
+    'type': '\'narrow\' | \'short\' | \'long\'',
     'required': false,
     'default': '\'narrow\''
   },

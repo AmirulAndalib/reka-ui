@@ -55,6 +55,7 @@ type RangeCalendarRootContext = {
   formatter: Formatter
   dir: Ref<Direction>
   disableDaysOutsideCurrentView: Ref<boolean>
+  fixedDate: Ref<'start' | 'end' | undefined>
 }
 
 export interface RangeCalendarRootProps extends PrimitiveProps {
@@ -108,6 +109,8 @@ export interface RangeCalendarRootProps extends PrimitiveProps {
   prevPage?: (placeholder: DateValue) => DateValue
   /** Whether or not to disable days outside the current view. */
   disableDaysOutsideCurrentView?: boolean
+  /** Which part of the range should be fixed */
+  fixedDate?: 'start' | 'end'
 }
 
 export type RangeCalendarRootEmits = {
@@ -190,6 +193,7 @@ const {
   prevPage: propsPrevPage,
   allowNonContiguousRanges,
   disableDaysOutsideCurrentView,
+  fixedDate,
 } = toRefs(props)
 
 const { primitiveElement, currentElement: parentElement }
@@ -274,6 +278,7 @@ const {
   isDateHighlightable: propsIsDateHighlightable.value,
   focusedValue,
   allowNonContiguousRanges,
+  fixedDate,
 })
 
 watch(modelValue, (_modelValue, _prevValue) => {
@@ -377,6 +382,7 @@ provideRangeCalendarRootContext({
   isHighlightedStart,
   isHighlightedEnd,
   disableDaysOutsideCurrentView,
+  fixedDate,
 })
 
 onMounted(() => {
