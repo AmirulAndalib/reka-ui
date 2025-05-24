@@ -1,15 +1,15 @@
 <script lang="ts">
-import type { Grid, Matcher, WeekDayFormat } from '@/date'
+import type { DateValue } from '@internationalized/date'
 
+import type { Ref } from 'vue'
+import type { Grid, Matcher, WeekDayFormat } from '@/date'
 import type { PrimitiveProps } from '@/Primitive'
+
 import type { Formatter } from '@/shared'
 import type { Direction } from '@/shared/types'
-
-import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
+import { isEqualDay, isSameDay } from '@internationalized/date'
 import { createContext, useDirection, useLocale } from '@/shared'
 import { getDefaultDate, handleCalendarInitialFocus } from '@/shared/date'
-import { isEqualDay, isSameDay } from '@internationalized/date'
 import { useCalendar, useCalendarState } from './useCalendar'
 
 type CalendarRootContext = {
@@ -44,6 +44,7 @@ type CalendarRootContext = {
   isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean
   formatter: Formatter
   dir: Ref<Direction>
+  disableDaysOutsideCurrentView: Ref<boolean>
 }
 
 export interface CalendarRootProps extends PrimitiveProps {
@@ -93,6 +94,8 @@ export interface CalendarRootProps extends PrimitiveProps {
   modelValue?: DateValue | DateValue[] | undefined
   /** Whether multiple dates can be selected */
   multiple?: boolean
+  /** Whether or not to disable days outside the current view. */
+  disableDaysOutsideCurrentView?: boolean
 }
 
 export type CalendarRootEmits = {
@@ -107,9 +110,9 @@ export const [injectCalendarRootContext, provideCalendarRootContext]
 </script>
 
 <script setup lang="ts">
-import { Primitive, usePrimitiveElement } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
 import { onMounted, toRefs, watch } from 'vue'
+import { Primitive, usePrimitiveElement } from '@/Primitive'
 
 const props = withDefaults(defineProps<CalendarRootProps>(), {
   defaultValue: undefined,
@@ -127,6 +130,7 @@ const props = withDefaults(defineProps<CalendarRootProps>(), {
   placeholder: undefined,
   isDateDisabled: undefined,
   isDateUnavailable: undefined,
+  disableDaysOutsideCurrentView: false,
 })
 const emits = defineEmits<CalendarRootEmits>()
 defineSlots<{
@@ -169,6 +173,7 @@ const {
   prevPage: propsPrevPage,
   dir: propDir,
   locale: propLocale,
+  disableDaysOutsideCurrentView,
 } = toRefs(props)
 
 const { primitiveElement, currentElement: parentElement }
@@ -317,6 +322,7 @@ provideCalendarRootContext({
   parentElement,
   onPlaceholderChange,
   onDateChange,
+  disableDaysOutsideCurrentView,
 })
 </script>
 
