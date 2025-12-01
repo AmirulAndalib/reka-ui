@@ -152,7 +152,7 @@
   },
   {
     'name': 'isInvalid',
-    'description': '<p>Value if the input is invalid</p>\n',
+    'description': '',
     'type': 'boolean'
   }
 ]" />
